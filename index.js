@@ -1,0 +1,21 @@
+const mongoose = require('mongoose')
+mongoose.connect('mongodb://127.0.0.1:27017/test')
+//----------------------
+
+const express = require('express')
+const app = express() // tạo ra ứng dụng, express() cung cấp toàn bộ phương thức và thuộc tính
+app.listen(3000, () => { //port:3000
+  console.log(`Example app listening on port 3000`)
+})
+
+app.set('views', './views') // để đứng ở thư mục views luôn
+app.set('view engine', 'pug') // chọn template engine, có thể thay pug = các engine khác
+
+app.use(express.static('public'))// để biến các thư mục trong file public thành static mà người dùng có thể truy cập vào được
+
+//-----------------------Goi den route
+
+const route = require("./route/client/index.route.js")
+route(app)
+
+
