@@ -2,10 +2,14 @@ const mongoose = require('mongoose')
 mongoose.connect('mongodb://127.0.0.1:27017/test')
 //----------------------
 
+require('dotenv').config()
+//----------------------
+
 const express = require('express')
 const app = express() // tạo ra ứng dụng, express() cung cấp toàn bộ phương thức và thuộc tính
-app.listen(3000, () => { //port:3000
-  console.log(`Example app listening on port 3000`)
+const port = process.env.PORT
+app.listen(port, () => { 
+  console.log(`Example app listening on port ${port}`)
 })
 
 app.set('views', './views') // để đứng ở thư mục views luôn
