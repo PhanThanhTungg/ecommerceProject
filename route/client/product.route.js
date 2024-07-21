@@ -1,9 +1,8 @@
 const express = require("express")
 const router = express.Router()
+const controller = require("../../controllers/client/product.controller.js")
 //có thể dùng router = express() nhưng thừa thãi vì ở đây chỉ cần router
 
-router.get("/", (req,res)=>{
-  res.send("Products")
-})eqeqwe
+router.get("/", controller.index)
 
 module.exports = router
