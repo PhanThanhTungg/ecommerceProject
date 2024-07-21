@@ -1,4 +1,5 @@
 extends ../../layouts/default.pug
+include ../../mixins/boxhead.pug
 
 block main
-  h1 Home
+  +box-head(pageTitle)
