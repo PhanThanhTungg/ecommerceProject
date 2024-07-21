@@ -7,8 +7,13 @@ module.exports.index = async(req,res)=>{ //index la ten ham
     deleted: false
   })
 
+  const newProducts = products.map(item =>{
+    item.newPrice = (item.price*(1-item.discountPercentage/100)).toFixed()
+    return item
+  })
+
   res.render("client/pages/product/index.pug",{
     pageTitle: "Trang sản phẩm",
-    products: products
+    products: newProducts
   })
 }

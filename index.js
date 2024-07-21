@@ -17,9 +17,13 @@ app.set('view engine', 'pug') // chọn template engine, có thể thay pug = c�
 
 app.use(express.static('public'))// để biến các thư mục trong file public thành static mà người dùng có thể truy cập vào được
 
+app.locals.prefixAdmin = require("./config/system.js").prefixAdmin // biến này dùng cho mọi file pug ở views
 //-----------------------Goi den route
 
 const route = require("./route/client/index.route.js")
 route(app)
+
+const adminRoute = require("./route/admin/index.route.js")
+adminRoute(app)
 
 
