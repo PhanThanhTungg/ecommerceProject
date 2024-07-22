@@ -31,7 +31,13 @@ if(formSearch){
     e.preventDefault()
     const keyword = e.target.elements["keyword"].value
     const url = new URL(window.location.href)
-    url.searchParams.set("keyword", keyword)
+    if(keyword){
+      url.searchParams.set("keyword", keyword)
+      
+    }
+    else{
+      url.searchParams.delete("keyword")
+    }
     window.location.href = url.href
   })
 }
