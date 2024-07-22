@@ -42,6 +42,21 @@ if(formSearch){
   })
 }
 
+//end-form search
+
+//pagination
+const listButtonPagination = document.querySelectorAll("[button-pagination]")
+console.log(listButtonPagination)
+if(listButtonPagination.length>0){
+  listButtonPagination.forEach(item=>{
+    item.addEventListener('click', ()=>{
+      const destinationPage = item.getAttribute("button-pagination")
+      const url = new URL(window.location.href)
+      url.searchParams.set("page", destinationPage)
+      window.location.href = url.href
+    })
+  })
+}
 
 
-//form search
+//end-pagination

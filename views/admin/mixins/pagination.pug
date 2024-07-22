@@ -1,0 +1,15 @@
+mixin pagination(objectPagination)
+  ul.pagination 
+    - let currentPage = objectPagination.currentPage 
+    - let totalPage = objectPagination.totalPage
+    if(currentPage > 1)
+      li(class="page-item")
+        button(class="page-link" button-pagination=currentPage-1) Trước
+
+    - for(let i = 1; i<= objectPagination.totalPage;i++)
+      li(class=`page-item ${i==currentPage?"active":""}`)
+        button(class="page-link" button-pagination = i) #{i}
+    
+    if(currentPage < totalPage)
+      li(class="page-item")
+        button(class="page-link" button-pagination=currentPage+1) Sau
