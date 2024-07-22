@@ -22,3 +22,20 @@ if(buttonStatus.length > 0){
   //end-Add class active cho filter status
 }
 //end-filter theo status
+
+
+//form search
+const formSearch = document.querySelector(".formSearch")
+if(formSearch){
+  formSearch.addEventListener("submit", (e)=>{
+    e.preventDefault()
+    const keyword = e.target.elements["keyword"].value
+    const url = new URL(window.location.href)
+    url.searchParams.set("keyword", keyword)
+    window.location.href = url.href
+  })
+}
+
+
+
+//form search
