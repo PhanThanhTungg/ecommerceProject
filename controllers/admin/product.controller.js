@@ -1,4 +1,5 @@
 const Product = require("../../models/product.model.js")
+const basicSearchHelper = require("../../helpers/basicSearch.helper.js")
 
 module.exports.index = async(req, res)=>{
   const filterStatus = [
@@ -15,16 +16,17 @@ module.exports.index = async(req, res)=>{
       value:"inactive"
     }
   ]
-  const find = {
+  let find = {
     deleted: false
   }
    
   const status = req.query.status
   if(status) find.status = status
 
-  const keySearch = req.query["keyword"] //req.query.keyword
-  if(keySearch) find.title = new RegExp(keySearch, "i")
-  //tìm các chuỗi có chứa keysearch không phân biệt hoa thường
+  const basicSearchObject = basicSearchHelper(req.query)
+  if(basicSearchObject.regex){
+    find.title= basicSearchObject.regex
+  }
 
   const products = await Product.find(find)
 
@@ -33,6 +35,6 @@ module.exports.index = async(req, res)=>{
     pageTitle: "Products",
     products: products,
     filterStatus: filterStatus,
-    keySearch: keySearch
+    keySearch: basicSearchObject.keySearch
   })
 }

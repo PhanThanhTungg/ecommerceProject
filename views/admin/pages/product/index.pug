@@ -1,4 +1,6 @@
 extends ../../layouts/default.pug
+include ../../mixins/filterStatus.pug
+include ../../mixins/formSearch.pug
 
 block main
   h1(class="mb-4") Quản lý sản phẩm
@@ -8,25 +10,9 @@ block main
     .card-body
       .row
         .col-6
-          each item,index in filterStatus
-            button(
-              class="btn btn-sm ml-1 btn-outline-success"
-              button-status= item.value
-            ) #{item.label}
-        
+          +filterStatus(filterStatus)
         .col-6 
-          form.d-flex.formSearch
-            input(
-              type="text"
-              placeholder="Nhập từ khóa"
-              name="keyword"
-              class="form-control"
-              value=keySearch
-            )
-            button(
-              class="btn btn-success"
-              type="submit"
-            ) Tìm
+          +formSearch(keySearch)
 
   .card.mb-3
     .card-header Danh sách
