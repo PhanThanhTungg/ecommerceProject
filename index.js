@@ -23,6 +23,10 @@ app.locals.prefixAdmin = require("./config/system.js").prefixAdmin // biến nà
 var methodOverride = require('method-override')
 app.use(methodOverride('_method'))
 
+//-----------------------setup body-parser
+var bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: false }))
+
 //-----------------------Goi den route
 
 const route = require("./route/client/index.route.js")

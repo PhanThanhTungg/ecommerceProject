@@ -69,3 +69,40 @@ buttonChangeStatus.forEach(item=>{
   })
 })
 //end button-changeStatus
+
+//handle tick of checkbox-multi
+const tableCheckBoxMulti = document.querySelector(".tableCheckBoxMulti")
+const inputCheckAll = tableCheckBoxMulti.querySelector("input[name='checkall']")
+const inputCheckBoxs = tableCheckBoxMulti.querySelectorAll("input[name='id']")
+
+inputCheckAll.addEventListener('click', ()=>{
+  if(inputCheckAll.checked == true) inputCheckBoxs.forEach(item => item.checked = true)
+  else inputCheckBoxs.forEach(item => item.checked = false)
+})
+
+inputCheckBoxs.forEach(item=>{
+  item.addEventListener('click', ()=>{
+    const inputTicked = tableCheckBoxMulti.querySelectorAll("input[name='id']:checked")
+    if(inputCheckBoxs.length == inputTicked.length){
+      inputCheckAll.checked = true
+    }
+    else inputCheckAll.checked = false
+  })
+})
+
+//end-handle tick of checkbox-multi
+
+//form change multi
+const formChangeMulti = document.querySelector("[form-change-multi]")
+const inputChangeMulti = formChangeMulti.querySelector("input")
+formChangeMulti.addEventListener('submit',(e)=>{
+  e.preventDefault()
+  const inputTicked = tableCheckBoxMulti.querySelectorAll("input[name='id']:checked")
+  if(inputTicked.length){
+    const listId = [...inputTicked].map(item=>item.value)
+    inputChangeMulti.value = listId.join(",")
+    formChangeMulti.submit()
+  }
+  else alert("Chọn ít nhất 1 ô")
+})
+//end - form change multi
