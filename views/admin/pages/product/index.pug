@@ -61,16 +61,22 @@ block main
                     status = "inactive"
                     id = item.id
                   ) Dừng hoạt động
-                form(
-                  method = "POST"
-                  action=`${prefixAdmin}/products/changeStatus` 
-                  class="form-change-status d-none"
-                )
               td
                 button(class="btn btn-warning btn-sm") Sửa
-                button(class="btn btn-danger btn-sm ml-1") Xóa
+                button(class="btn btn-danger btn-sm ml-1 buttonDeleteItem" id=item.id) Xóa
+                
   nav 
     +pagination(objectPagination)
+  form(
+    method = "POST"
+    action=`${prefixAdmin}/products/changeStatus` 
+    class="form-change-status d-none"
+  )
+  form(
+    method = "POST"
+    action=`${prefixAdmin}/products/delete/` 
+    class="formDeleteItem d-none"
+  )
    
     
 

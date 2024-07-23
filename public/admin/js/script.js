@@ -106,3 +106,19 @@ formChangeMulti.addEventListener('submit',(e)=>{
   else alert("Chọn ít nhất 1 ô")
 })
 //end - form change multi
+
+//Delete item
+const buttonDeletes = document.querySelectorAll(".buttonDeleteItem")
+const formDetele = document.querySelector(".formDeleteItem")
+buttonDeletes.forEach(buttonDelete=>{
+  buttonDelete.addEventListener('click', ()=>{
+    const confirmVal = confirm("Bạn có chắc muốn xóa?")
+    if(confirmVal){
+      const idItem = buttonDelete.getAttribute("id")
+      formDetele.action+=`${idItem}?_method=DELETE`
+      formDetele.submit()
+    }
+  })
+})
+
+//end-Delete item
