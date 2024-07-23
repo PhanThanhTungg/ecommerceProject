@@ -64,7 +64,7 @@ buttonChangeStatus.forEach(item=>{
   item.addEventListener('click', ()=>{
     const [status, id] =[item.getAttribute("status"), item.getAttribute("id")]
     const desStatus = status=="active"?"inactive":"active"
-    formChangeStatus.action+= `/${desStatus}/${id}`
+    formChangeStatus.action+= `/${desStatus}/${id}?_method=PATCH`
     formChangeStatus.submit()
   })
 })
