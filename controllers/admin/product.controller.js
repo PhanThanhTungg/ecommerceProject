@@ -36,6 +36,14 @@ module.exports.index = async(req, res)=>{
   const [totalProduct, currentPage, limit] = [await Product.countDocuments(find),1,4]
   const objectPagination = await paginationHelper(req,totalProduct, currentPage,limit)
 
+  const changeStatus = req.query.changeStatus
+  const id = req.query.id
+  if(changeStatus && id){
+    await Product.updateOne({_id:id},{status:changeStatus})
+    res.redirect('back')
+    return
+  }
+
 
   const products = await Product.find(find)
   .skip(objectPagination.skip) //bỏ qua bao nhiêu

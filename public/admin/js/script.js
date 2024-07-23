@@ -41,12 +41,10 @@ if(formSearch){
     window.location.href = url.href
   })
 }
-
 //end-form search
 
 //pagination
 const listButtonPagination = document.querySelectorAll("[button-pagination]")
-console.log(listButtonPagination)
 if(listButtonPagination.length>0){
   listButtonPagination.forEach(item=>{
     item.addEventListener('click', ()=>{
@@ -57,6 +55,17 @@ if(listButtonPagination.length>0){
     })
   })
 }
-
-
 //end-pagination
+
+//button-changeStatus
+const buttonChangeStatus = document.querySelectorAll("[status]")
+buttonChangeStatus.forEach(item=>{
+  item.addEventListener('click', ()=>{
+    const url = new URL(window.location.href)
+    const des = item.getAttribute("status")
+    url.searchParams.set("changeStatus",`${des=="active"?"inactive":"active"}`)
+    url.searchParams.set("id",item.getAttribute("id"))
+    window.location.href = url.href
+  })
+})
+//end button-changeStatus
