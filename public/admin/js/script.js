@@ -60,12 +60,12 @@ if(listButtonPagination.length>0){
 //button-changeStatus
 const buttonChangeStatus = document.querySelectorAll("[status]")
 buttonChangeStatus.forEach(item=>{
+  const formChangeStatus = document.querySelector(".form-change-status")
   item.addEventListener('click', ()=>{
-    const url = new URL(window.location.href)
-    const des = item.getAttribute("status")
-    url.searchParams.set("changeStatus",`${des=="active"?"inactive":"active"}`)
-    url.searchParams.set("id",item.getAttribute("id"))
-    window.location.href = url.href
+    const [status, id] =[item.getAttribute("status"), item.getAttribute("id")]
+    const desStatus = status=="active"?"inactive":"active"
+    formChangeStatus.action+= `/${desStatus}/${id}`
+    formChangeStatus.submit()
   })
 })
 //end button-changeStatus
