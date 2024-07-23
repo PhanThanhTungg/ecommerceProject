@@ -97,10 +97,28 @@ const formChangeMulti = document.querySelector("[form-change-multi]")
 const inputChangeMulti = formChangeMulti.querySelector("input")
 formChangeMulti.addEventListener('submit',(e)=>{
   e.preventDefault()
+
   const inputTicked = tableCheckBoxMulti.querySelectorAll("input[name='id']:checked")
   if(inputTicked.length){
-    const listId = [...inputTicked].map(item=>item.value)
+
+    const typeChange = e.target.elements["type"].value
+
+    if(typeChange=="deleteAll"){
+      const confirmVal = confirm("Bạn có chắc muốn xóa tất?")
+      if(!confirmVal) return
+    }
+
+    let listId
+    if(typeChange=="changePosition"){
+      listId = [...inputTicked].map(item=>{
+        const pos = item.closest("tr").querySelector("[name='position']").value
+        return `${item.value}-${pos}`
+      })
+    }
+    else listId = [...inputTicked].map(item=>item.value)
+    
     inputChangeMulti.value = listId.join(",")
+
     formChangeMulti.submit()
   }
   else alert("Chọn ít nhất 1 ô")

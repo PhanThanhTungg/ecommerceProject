@@ -7,8 +7,11 @@ mixin formChangeMulti(pathAction)
     .d-flex.align-items-start
       .form-group
         select(name="type" class="form-control")
+          option(disabled selected) --Chọn thao tác--
           option(value="active") Hoạt động
           option(value="inactive") Dừng hoạt động
+          option(value="deleteAll") Xóa
+          option(value="changePosition") Sửa vị trí
       .form-group
         input(
           type="text"
