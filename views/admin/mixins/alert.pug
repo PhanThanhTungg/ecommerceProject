@@ -1,0 +1,6 @@
+mixin alert-success(time)
+  - if (messages.success)
+    //- messages là biến toàn cục 
+    .alert.alert-success(show-alert data-time=`${time}`)
+      span= messages.success
+      span(close-alert) x

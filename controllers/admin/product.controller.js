@@ -38,6 +38,7 @@ module.exports.index = async(req, res)=>{
 
 
   const products = await Product.find(find)
+  .sort({position:"desc"})
   .skip(objectPagination.skip) //bỏ qua bao nhiêu
   .limit(objectPagination.limit) // giới hạn bao nhiêu
 
@@ -54,6 +55,7 @@ module.exports.index = async(req, res)=>{
 module.exports.changeStatus = async(req,res)=>{
   const [status, id] = [req.params.status, req.params.id]
   await Product.updateOne({_id:id},{status:status})
+  req.flash('success', 'Thay đổi trạng thái thành công')
   res.redirect('back')
 }
 
@@ -63,14 +65,18 @@ module.exports.changeMulti = async(req,res)=>{
   switch(req.body.type){
     case "active":
       await Product.updateMany({_id:{$in:listId}},{status:"active"})
+      req.flash('success',`${listId.length} sản phẩm đã cập nhật thành trạng thái hoạt động`)
       break
     case "inactive":
       await Product.updateMany({_id:{$in:listId}},{status:"inactive"})
+      req.flash('success',`${listId.length} sản phẩm đã cập nhật thành trạng thái dừng hoạt động`)
       break
     case "deleteAll":
       await Product.updateMany({_id:{$in:listId}},{deleted: true,deletedAt: new Date()})
+      req.flash('success',`Đã xóa ${listId.length} sản phẩm`)
       break
     case 'changePosition':
+      req.flash('success',`Đã thay đổi vị trí ${listId.length} sản phẩm`)
       listId.forEach(async item=>{
         const [id,pos] = item.split("-")
         await Product.updateOne({_id: id},{position:pos})

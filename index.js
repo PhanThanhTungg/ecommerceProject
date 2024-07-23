@@ -27,6 +27,15 @@ app.use(methodOverride('_method'))
 var bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: false }))
 
+//-----------------------setup express-flash
+var flash = require('express-flash')
+var cookieParser = require('cookie-parser')
+var session = require('express-session')
+
+app.use(cookieParser('random String'));//random String là password bất kỳ 
+app.use(session({ cookie: { maxAge: 60000 }}))
+app.use(flash())
+
 //-----------------------Goi den route
 
 const route = require("./route/client/index.route.js")
