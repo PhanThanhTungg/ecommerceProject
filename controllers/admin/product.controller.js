@@ -117,3 +117,38 @@ module.exports.createPOST = async(req, res)=>{
   req.flash("success", "Tạo sản phẩm thành công")
   res.redirect(`${systemConfig.prefixAdmin}/products`)
 }
+
+module.exports.editGET = async(req,res)=>{
+  try {
+    const id = req.params.id
+    const product = await Product.findOne({
+      _id:id,
+      deleted:false
+    })
+    res.render("admin/pages/product/edit.pug",{
+      pageTitle: "Chỉnh sửa sản phẩm",
+      product: product
+    })
+  } catch (error) {
+    req.flash("error","Đường link không tồn tại")
+    res.redirect(`${systemConfig.prefixAdmin}/products`)
+  }
+}
+
+module.exports.editPATCH = async(req, res)=>{
+  req.body.price = parseInt(req.body.price)
+  req.body.discountPercentage = parseInt(req.body.discountPercentage)
+  req.body.stock = parseInt(req.body.stock)
+  if(req.body.position){
+    req.body.position = parseInt(req.body.position)
+  }
+  else{
+    req.body.position = await Product.countDocuments()+1
+  }
+  if(req.file) req.body.thumbnail = `/uploads/${req.file.filename}`
+  // link đã đi thẳng vào public
+  await Product.updateOne({_id:req.params.id},req.body)
+
+  req.flash("success", "Cập nhật sản phẩm thành công")
+  res.redirect(`back`)
+}

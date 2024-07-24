@@ -15,9 +15,18 @@ router.patch("/change-multi", controller.changeMulti)
 router.delete("/delete/:id", controller.deleteItem)
 
 router.get("/create", controller.createGET)
+const validate = require("../../validate/admin/product.validate.js")
 router.post("/create", 
   upload.single('thumbnail'),
+  validate.createPOST,
   controller.createPOST
+)
+
+router.get("/edit/:id", controller.editGET)
+router.patch("/edit/:id", 
+  upload.single('thumbnail'),
+  validate.createPOST,
+  controller.editPATCH
 )
 
 module.exports = router
