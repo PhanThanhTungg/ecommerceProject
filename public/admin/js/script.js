@@ -72,30 +72,33 @@ buttonChangeStatus.forEach(item=>{
 
 //handle tick of checkbox-multi
 const tableCheckBoxMulti = document.querySelector(".tableCheckBoxMulti")
-const inputCheckAll = tableCheckBoxMulti.querySelector("input[name='checkall']")
-const inputCheckBoxs = tableCheckBoxMulti.querySelectorAll("input[name='id']")
+if(tableCheckBoxMulti){
+  const inputCheckAll = tableCheckBoxMulti.querySelector(`input[name='checkall']`)
+  const inputCheckBoxs = tableCheckBoxMulti.querySelectorAll(`input[name='id']`)
 
-inputCheckAll.addEventListener('click', ()=>{
-  if(inputCheckAll.checked == true) inputCheckBoxs.forEach(item => item.checked = true)
-  else inputCheckBoxs.forEach(item => item.checked = false)
-})
-
-inputCheckBoxs.forEach(item=>{
-  item.addEventListener('click', ()=>{
-    const inputTicked = tableCheckBoxMulti.querySelectorAll("input[name='id']:checked")
-    if(inputCheckBoxs.length == inputTicked.length){
-      inputCheckAll.checked = true
-    }
-    else inputCheckAll.checked = false
+  inputCheckAll.addEventListener('click', ()=>{
+    if(inputCheckAll.checked == true) inputCheckBoxs.forEach(item => item.checked = true)
+    else inputCheckBoxs.forEach(item => item.checked = false)
   })
-})
+
+  inputCheckBoxs.forEach(item=>{
+    item.addEventListener('click', ()=>{
+      const inputTicked = tableCheckBoxMulti.querySelectorAll("input[name='id']:checked")
+      if(inputCheckBoxs.length == inputTicked.length){
+        inputCheckAll.checked = true
+      }
+      else inputCheckAll.checked = false
+    })
+  })
+}
 
 //end-handle tick of checkbox-multi
 
 //form change multi
 const formChangeMulti = document.querySelector("[form-change-multi]")
-const inputChangeMulti = formChangeMulti.querySelector("input")
-formChangeMulti.addEventListener('submit',(e)=>{
+if(formChangeMulti){
+  const inputChangeMulti = formChangeMulti.querySelector("input")
+  formChangeMulti.addEventListener('submit',(e)=>{
   e.preventDefault()
 
   const inputTicked = tableCheckBoxMulti.querySelectorAll("input[name='id']:checked")
@@ -123,6 +126,8 @@ formChangeMulti.addEventListener('submit',(e)=>{
   }
   else alert("Chọn ít nhất 1 ô")
 })
+}
+
 //end - form change multi
 
 //Delete item
@@ -155,3 +160,17 @@ if(showAlert) {
   })
 }
 // End show-alert
+
+//upload-image-preview
+const uploadImageInput = document.querySelector("[upload-image-input]")
+if(uploadImageInput){
+  uploadImageInput.addEventListener("change", e=>{
+    const [file] = e.target.files //~ const file = e.target.files[0]
+    if(file){
+      const uploadImagePreview = document.querySelector('[upload-image-preview]')
+      uploadImagePreview.src = URL.createObjectURL(file)
+    }
+  })
+}
+
+//end-upload-image-preview
