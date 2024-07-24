@@ -2,8 +2,9 @@ const express = require("express")
 const router = express.Router()
 const controller = require("../../controllers/admin/product.controller.js")
 
+const storageMulterHelper = require("../../helpers/storageMulter.helper.js")
 const multer  = require('multer')
-const upload = multer({ dest:'./public/uploads/' })
+const upload = multer({storage: storageMulterHelper})
 
 router.get("/", controller.index)
 // dau / ~~ `${prefixAdmin}/products`
