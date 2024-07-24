@@ -1,6 +1,7 @@
 const Product = require("../../models/product.model.js")
 const basicSearchHelper = require("../../helpers/basicSearch.helper.js")
 const paginationHelper = require("../../helpers/pagination.helper.js")
+const systemConfig = require("../../config/system.js")
 
 module.exports.index = async(req, res)=>{
 
@@ -90,4 +91,28 @@ module.exports.deleteItem = async(req,res)=>{
   const id = req.params.id
   await Product.updateOne({_id:id},{deleted: true,deletedAt: new Date()})
   res.redirect('back')
+}
+
+module.exports.createGET = async(req, res)=>{
+  res.render("admin/pages/product/create.pug",{
+    pageTitle: "Thêm mới sản phẩm"
+  })
+}
+
+module.exports.createPOST = async(req, res)=>{
+  req.body.price = parseInt(req.body.price)
+  req.body.discountPercentage = parseInt(req.body.discountPercentage)
+  req.body.stock = parseInt(req.body.stock)
+  if(req.body.position){
+    req.body.position = parseInt(req.body.position)
+  }
+  else{
+    req.body.position = await Product.countDocuments()+1
+  }
+
+  const product = new Product(req.body)
+  await product.save()
+
+  req.flash("success", "Tạo sản phẩm thành công")
+  res.redirect(`${systemConfig.prefixAdmin}/products`)
 }

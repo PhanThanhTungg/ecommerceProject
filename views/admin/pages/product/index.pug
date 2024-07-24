@@ -6,6 +6,7 @@ include ../../mixins/formChangeMulti.pug
 include ../../mixins/alert.pug
 
 block main
+  +alert-success(2000)
   h1(class="mb-4") Quản lý sản phẩm
 
   .card.mb-3
@@ -20,7 +21,14 @@ block main
   .card.mb-3
     .card-header Danh sách
     .card-body
-      +formChangeMulti(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+      .row 
+        .col-8
+          +formChangeMulti(`${prefixAdmin}/products/change-multi?_method=PATCH`)
+        .col-4
+          a(
+            href=`${prefixAdmin}/products/create`
+            class="btn btn-outline-success button-1"
+          ) + Thêm mới
       table.table.table-hover.table-sm.tableCheckBoxMulti
         thead
           tr
