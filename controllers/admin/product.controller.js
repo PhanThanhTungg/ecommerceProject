@@ -109,8 +109,7 @@ module.exports.createPOST = async(req, res)=>{
   else{
     req.body.position = await Product.countDocuments()+1
   }
-  if(req.file) req.body.thumbnail = `/uploads/${req.file.filename}`
-  // link đã đi thẳng vào public
+  
   const product = new Product(req.body)
   await product.save()
 
