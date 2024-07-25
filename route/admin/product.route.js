@@ -28,6 +28,7 @@ router.post("/create",
 router.get("/edit/:id", controller.editGET)
 router.patch("/edit/:id",
   upload.single('thumbnail'),
+  cloudinaryMiddleware.cloundinary,
   validate.createPOST,
   controller.editPATCH
 )

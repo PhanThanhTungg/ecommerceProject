@@ -144,8 +144,7 @@ module.exports.editPATCH = async(req, res)=>{
   else{
     req.body.position = await Product.countDocuments()+1
   }
-  if(req.file) req.body.thumbnail = `/uploads/${req.file.filename}`
-  // link đã đi thẳng vào public
+
   await Product.updateOne({_id:req.params.id},req.body)
 
   req.flash("success", "Cập nhật sản phẩm thành công")
