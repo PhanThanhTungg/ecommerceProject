@@ -85,6 +85,10 @@ block main
                   href = `${prefixAdmin}/products/edit/${item.id}`
                 ) Sửa
                 button(class="btn btn-danger btn-sm ml-1 buttonDeleteItem" id=item.id) Xóa
+                a(
+                  href=`${prefixAdmin}/products/detail/${item.id}`
+                  class="btn btn-info btn-sm ml-1"
+                ) Chi tiết
                 
   nav 
     +pagination(objectPagination)

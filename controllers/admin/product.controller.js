@@ -152,3 +152,12 @@ module.exports.editPATCH = async(req, res)=>{
   req.flash("success", "Cập nhật sản phẩm thành công")
   res.redirect(`back`)
 }
+
+module.exports.detailGET = async(req,res)=>{
+  const id = req.params.id
+  const product = await Product.findOne({_id:id,deleted:false})
+  res.render("admin/pages/product/detail.pug",{
+    pageTitle: product.title,
+    product: product
+  })
+}
