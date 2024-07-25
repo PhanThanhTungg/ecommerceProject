@@ -12,10 +12,10 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-app.set('views', './views') // để đứng ở thư mục views luôn
+app.set('views', `${__dirname}/views`) // để đứng ở thư mục views luôn
 app.set('view engine', 'pug') // chọn template engine, có thể thay pug = các engine khác
 
-app.use(express.static('public'))// để biến các thư mục trong file public thành static mà người dùng có thể truy cập vào được
+app.use(express.static(`${__dirname}/public`))// để biến các thư mục trong file public thành static mà người dùng có thể truy cập vào được
 
 app.locals.prefixAdmin = require("./config/system.js").prefixAdmin // biến này dùng cho mọi file pug ở views
 
