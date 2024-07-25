@@ -17,3 +17,22 @@ module.exports.index = async(req,res)=>{ //index la ten ham
     products: newProducts
   })
 }
+
+module.exports.detailGET = async (req, res) => {
+  const slug = req.params.slug;
+
+  const product = await Product.findOne({
+    slug: slug,
+    deleted: false,
+    status: "active"
+  });
+
+  if(product) {
+    res.render("client/pages/product/detail", {
+      pageTitle: "Chi tiết sản phẩm",
+      product: product
+    });
+  } else {
+    res.redirect("/");
+  }
+}
