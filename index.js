@@ -36,6 +36,9 @@ app.use(cookieParser('random String'));//random String là password bất kỳ
 app.use(session({ cookie: { maxAge: 60000 }}))
 app.use(flash())
 
+//-----------------------config tinymce
+var path = require('path')
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')))
 
 //-----------------------Goi den route
 
