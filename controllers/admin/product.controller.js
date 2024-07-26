@@ -82,9 +82,13 @@ module.exports.changeMulti = async(req,res)=>{
       await Product.updateMany({_id:{$in:listId}},{status:"inactive"})
       req.flash('success',`${listId.length} sản phẩm đã cập nhật thành trạng thái dừng hoạt động`)
       break
-    case "deleteAll":
+    case "moveToBin":
       await Product.updateMany({_id:{$in:listId}},{deleted: true,deletedAt: new Date()})
-      req.flash('success',`Đã xóa ${listId.length} sản phẩm`)
+      req.flash('success',`Đã chuyển ${listId.length} sản phẩm vào thùng rác`)
+      break
+    case "deleteAll":
+      await Product.deleteMany({_id:{$in:listId}})
+      req.flash('success',`Đã xóa vĩnh viễn${listId.length} sản phẩm`)
       break
     case 'changePosition':
       req.flash('success',`Đã thay đổi vị trí ${listId.length} sản phẩm`)
@@ -100,6 +104,7 @@ module.exports.changeMulti = async(req,res)=>{
 module.exports.deleteItem = async(req,res)=>{
   const id = req.params.id
   await Product.updateOne({_id:id},{deleted: true,deletedAt: new Date()})
+  req.flash('success','Đã chuyển sản phẩm vào thùng rác')
   res.redirect('back')
 }
 

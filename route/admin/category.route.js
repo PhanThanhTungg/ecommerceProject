@@ -20,4 +20,6 @@ router.post("/create",
   controller.createPOST
 )
 
+router.delete("/delete/:id", controller.delete)
+
 module.exports = router
