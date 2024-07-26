@@ -172,5 +172,38 @@ if(uploadImageInput){
     }
   })
 }
-
 //end-upload-image-preview
+
+//sort by multiple criteria
+const sortSelect = document.querySelector("[sort-select]")
+if(sortSelect){
+  sortSelect.addEventListener("change", e=>{
+    const [keySort,valueSort] = e.target.value.split("-")
+    const url = new URL(window.location.href)
+    url.searchParams.set("keySort", keySort)
+    url.searchParams.set("valueSort", valueSort)
+    window.location.href = url.href
+  })
+}
+
+const buttonClear = document.querySelector("[sort-clear]")
+if(buttonClear){
+  buttonClear.addEventListener("click", ()=>{
+    const url = new URL(window.location.href)
+    if(!url.searchParams.get("keySort")) return
+    url.searchParams.delete("keySort")
+    url.searchParams.delete("valueSort")
+    window.location.href = url.href
+  })
+}
+
+const url = new URL(window.location.href)
+const keySort = url.searchParams.get("keySort")
+const valueSort = url.searchParams.get("valueSort")
+if(keySort && valueSort){
+  const optionSelected = document.querySelector(`option[value='${keySort}-${valueSort}']`)
+  optionSelected.selected = true
+}
+
+
+//end - sort by multiple criteria

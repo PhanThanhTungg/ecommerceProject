@@ -37,11 +37,21 @@ module.exports.index = async(req, res)=>{
   const [totalProduct, currentPage, limit] = [await Product.countDocuments(find),1,4]
   const objectPagination = await paginationHelper(req,totalProduct, currentPage,limit)
 
+  //-------sortByMultipleCriteria
+  let sort = {}
+  
+  if(req.query.keySort && req.query.valueSort){
+    sort[req.query.keySort] = req.query.valueSort
+  }
+  else{
+    sort.position = 'desc'
+  }
+
 
   const products = await Product.find(find)
-  .sort({position:"desc"})
   .skip(objectPagination.skip) //bỏ qua bao nhiêu
   .limit(objectPagination.limit) // giới hạn bao nhiêu
+  .sort(sort)
 
 
   res.render("admin/pages/product/index.pug",{
