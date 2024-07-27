@@ -3,7 +3,7 @@ mixin select-tree(records, level = 1)
     - const prefix = Array(level).join("-- ")
     option(
       value=item.id
-      selected = (item.id==category.parent_id?true:false)
+      selected = (item.id==(category?category.parent_id:"")?true:false)
     ) #{prefix}#{item.title}
     if(item.children)
       +select-tree(item.children, level + 1)
