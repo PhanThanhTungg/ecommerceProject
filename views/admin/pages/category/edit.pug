@@ -5,7 +5,7 @@ block main
   h1(class="mb-4") #{pageTitle}
 
   form(
-    action=`${prefixAdmin}/categorys/create`
+    action=`${prefixAdmin}/categorys/edit/${category.id}?_method=PATCH`
     method="POST"
     enctype="multipart/form-data"
   )
@@ -16,6 +16,7 @@ block main
         class="form-control"
         id="title"
         name="title"
+        value=category.title
         required
       )
     div(class="form-group")
@@ -37,7 +38,7 @@ block main
         name="description"
         rows="5"
         textarea-mce
-      )
+      ) #{category.description}
     div(
       class="form-group"
       upload-image
@@ -52,7 +53,7 @@ block main
         upload-image-input
       )
       img(
-        src=""
+        src=category.thumbnail
         class="image-preview"
         upload-image-preview
       )
@@ -64,6 +65,7 @@ block main
         id="position"
         name="position"
         placeholder="Tự động tăng"
+        value= category.position
         min="1"
       )
     div(class="form-group form-check form-check-inline")
@@ -73,7 +75,7 @@ block main
         id="statusActive"
         name="status"
         value="active"
-        checked
+        checked = (category.status =="active"?true:false)
       )
       label(for="statusActive" class="form-check-label") Hoạt động
     div(class="form-group form-check form-check-inline")
@@ -83,10 +85,11 @@ block main
         id="statusInActive"
         name="status"
         value="inactive"
+        checked = (category.status =="inactive"?true:false)
       )
       label(for="statusInActive" class="form-check-label") Dừng hoạt động
     div(class="form-group")
       button(
         type="submit"
         class="btn btn-primary"
-      ) Tạo mới
+      ) Cập nhật
