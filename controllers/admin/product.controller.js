@@ -115,16 +115,6 @@ module.exports.createGET = async(req, res)=>{
 }
 
 module.exports.createPOST = async(req, res)=>{
-  req.body.price = parseInt(req.body.price)
-  req.body.discountPercentage = parseInt(req.body.discountPercentage)
-  req.body.stock = parseInt(req.body.stock)
-  if(req.body.position){
-    req.body.position = parseInt(req.body.position)
-  }
-  else{
-    req.body.position = await Product.countDocuments()+1
-  }
-  
   const product = new Product(req.body)
   await product.save()
 
@@ -150,16 +140,6 @@ module.exports.editGET = async(req,res)=>{
 }
 
 module.exports.editPATCH = async(req, res)=>{
-  req.body.price = parseInt(req.body.price)
-  req.body.discountPercentage = parseInt(req.body.discountPercentage)
-  req.body.stock = parseInt(req.body.stock)
-  if(req.body.position){
-    req.body.position = parseInt(req.body.position)
-  }
-  else{
-    req.body.position = await Product.countDocuments()+1
-  }
-
   await Product.updateOne({_id:req.params.id},req.body)
 
   req.flash("success", "Cập nhật sản phẩm thành công")
