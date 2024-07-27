@@ -5,7 +5,7 @@ const createTreeHelper = require("../../helpers/createTree.helper.js")
 module.exports.index = async (req,res)=>{
   const categorys = await Category.find({deleted: false, status: "active"})
   const newCategorys = createTreeHelper(categorys)
-  console.log(newCategorys)
+
   res.render("admin/pages/category/index.pug",{
     pageTitle: "Danh mục",
     categorys: newCategorys
