@@ -22,13 +22,6 @@ module.exports.createGET = async (req,res)=>{
 }
 
 module.exports.createPOST = async (req,res)=>{
-  if(req.body.position){
-    req.body.position = parseInt(req.body.position)
-  }
-  else{
-    req.body.position = await Category.countDocuments()+1
-  }
-
   const category = new Category(req.body)
   await category.save()
   req.flash("success","Tạo danh mục thành công")

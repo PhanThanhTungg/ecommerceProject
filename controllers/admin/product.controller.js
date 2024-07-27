@@ -1,6 +1,10 @@
 const Product = require("../../models/product.model.js")
+const Category = require("../../models/category.model")
+
 const basicSearchHelper = require("../../helpers/basicSearch.helper.js")
 const paginationHelper = require("../../helpers/pagination.helper.js")
+const createTreeHelper = require("../../helpers/createTree.helper.js")
+
 const systemConfig = require("../../config/system.js")
 
 module.exports.index = async(req, res)=>{
@@ -109,8 +113,10 @@ module.exports.deleteItem = async(req,res)=>{
 }
 
 module.exports.createGET = async(req, res)=>{
+  const categorys = await Category.find({deleted: false, status: "active"})
   res.render("admin/pages/product/create.pug",{
-    pageTitle: "Thêm mới sản phẩm"
+    pageTitle: "Thêm mới sản phẩm",
+    categorys: createTreeHelper(categorys)
   })
 }
 
@@ -125,13 +131,20 @@ module.exports.createPOST = async(req, res)=>{
 module.exports.editGET = async(req,res)=>{
   try {
     const id = req.params.id
+
     const product = await Product.findOne({
       _id:id,
       deleted:false
     })
+
+    const categorys = await Category.find({deleted: false, status: "active"})
+    const category = await Category.findOne({_id: product.category_id})
+
     res.render("admin/pages/product/edit.pug",{
       pageTitle: "Chỉnh sửa sản phẩm",
-      product: product
+      product: product,
+      categorys: createTreeHelper(categorys),
+      categoryProduct:category
     })
   } catch (error) {
     req.flash("error","Đường link không tồn tại")
@@ -149,8 +162,10 @@ module.exports.editPATCH = async(req, res)=>{
 module.exports.detailGET = async(req,res)=>{
   const id = req.params.id
   const product = await Product.findOne({_id:id,deleted:false})
+  const category = await Category.findOne({_id: product.category_id})
   res.render("admin/pages/product/detail.pug",{
     pageTitle: product.title,
-    product: product
+    product: product,
+    categoryTitle: category.title
   })
 }
