@@ -7,4 +7,7 @@ router.get("/", controller.index)
 router.get("/create", controller.createGET)
 router.post("/create", controller.createPOST)
 
+router.get("/permissions", controller.permissionsGET)
+router.patch("/permissions", controller.permissionsPATCH)
+
 module.exports = router

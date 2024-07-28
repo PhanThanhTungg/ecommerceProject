@@ -207,3 +207,43 @@ if(keySort && valueSort){
 
 
 //end - sort by multiple criteria
+
+//update permissions
+const tablePermissions = document.querySelector(".table-permissions")
+if(tablePermissions){
+  const formUpdatePermissions = document.querySelector("[form-update-permissions]")
+  formUpdatePermissions.addEventListener("submit", (e)=>{
+    e.preventDefault()
+    const idRoles = tablePermissions.querySelectorAll("thead [idRole]")
+
+    const permissions = [...idRoles].map(item => [item.getAttribute("idRole")])
+    
+    const dataNames = tablePermissions.querySelectorAll("[data-name]")
+    dataNames.forEach(dataName =>{
+      const checkboxs = dataName.querySelectorAll("input")
+      checkboxs.forEach((checkbox, item)=>{
+        if(checkbox.checked) permissions[item].push(dataName.getAttribute("data-name"))
+      })
+    })
+
+    const inputUpdate = formUpdatePermissions.querySelector("input")
+    inputUpdate.value = JSON.stringify(permissions)
+    e.target.submit()
+  })  
+}
+
+//---------------------------
+const roles = JSON.parse(tablePermissions.getAttribute("roles"))
+const permissions = roles.map(item => item.permissions)
+
+const dataNames = tablePermissions.querySelectorAll("[data-name]")
+dataNames.forEach(dataName=>{
+  const inputs = dataName.querySelectorAll("input")
+  permissions.forEach((permission,index)=>{
+    if(permission.includes(dataName.getAttribute("data-name"))){
+      inputs[index].checked = true
+    }
+  })
+})
+
+//end - update permissions
