@@ -1,34 +1,19 @@
 const express = require("express")
 const router = express.Router()
-
-const controller = require("../../controllers/admin/category.controller.js")
-
-const validate = require("../../validate/admin/category.validate.js")
+const controller = require("../../controllers/admin/adminAcc.controller.js")
+const validate = require("../../validate/admin/adminAcc.validate")
 
 const multer = require('multer')
 const upload = multer()
 const cloudinaryMiddleware = require("../../middlewares/admin/cloudinary.middleware.js")
 
 router.get("/", controller.index)
-
 router.get("/create", controller.createGET)
-
-
 router.post("/create", 
-  upload.single('thumbnail'),
+  upload.single('avatar'),
   cloudinaryMiddleware.cloundinary,
   validate.createPOST,
   controller.createPOST
-)
-
-router.delete("/delete/:id", controller.delete)
-
-router.get("/edit/:id", controller.editGET)
-router.patch("/edit/:id", 
-  upload.single('thumbnail'),
-  cloudinaryMiddleware.cloundinary,
-  validate.createPOST,
-  controller.editPATCH
 )
 
 module.exports = router
