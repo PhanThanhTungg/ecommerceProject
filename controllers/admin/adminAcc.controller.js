@@ -17,7 +17,6 @@ module.exports.index = async(req,res)=>{
 
 module.exports.createGET = async(req,res)=>{
   const roles = await Role.find({deleted: false})
-  console.log(roles)
   res.render("admin/pages/adminAcc/create.pug",{
     pageTitle: "Tạo tài khoản admin",
     roles: roles
@@ -30,4 +29,33 @@ module.exports.createPOST = async(req,res)=>{
   await adminAcc.save()
   req.flash("success","Tạo tài khoản admin thành công")
   res.redirect(`${systemConfig.prefixAdmin}/adminAccs`)
+}
+
+module.exports.editGET = async(req,res)=>{
+  try {
+    const adminAcc = await AdminAcc.findOne({_id: req.params.id}).select("-token -password")
+    const roles = await Role.find({deleted: false})
+    res.render("admin/pages/adminAcc/edit.pug",{
+      pageTitle: "Chỉnh sửa tài khoản",
+      adminAcc: adminAcc,
+      roles: roles
+    })
+  } catch (error) {
+    res.redirect(`${systemConfig.prefixAdmin}/adminAccs`)
+  }
+}
+
+module.exports.editPATCH = async(req,res)=>{
+  if(!req.body.password){
+    delete req.body.password
+  }
+  else{
+    req.body.password = md5(req.body.password)
+  }
+
+  await AdminAcc.updateOne({_id: req.params.id, deleted: false}, req.body)
+
+  req.flash("success", "Cập nhật thành công")
+  res.redirect("back")
+
 }
