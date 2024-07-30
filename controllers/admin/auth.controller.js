@@ -33,3 +33,8 @@ module.exports.loginPOST = async (req,res)=>{
   req.flash("success","Đăng nhập thành công")
   res.redirect(`${systemConfig.prefixAdmin}/dashboard`)
 }
+
+module.exports.logoutGET = (req,res)=>{
+  res.clearCookie("adminToken")
+  res.redirect(`${systemConfig.prefixAdmin}/auth/login`)
+}
