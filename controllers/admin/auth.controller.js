@@ -4,6 +4,12 @@ const systemConfig = require("../../config/system.js")
 const md5 = require("md5")
 
 module.exports.loginGET = (req,res)=>{
+  const adminToken = req.cookies.adminToken
+  if(adminToken){
+    res.redirect(`${systemConfig.prefixAdmin}/dashboard`)
+    return
+  }
+
   res.render("admin/pages/auth/login.pug",{
     pageTitle: "Đăng nhập"
   })
