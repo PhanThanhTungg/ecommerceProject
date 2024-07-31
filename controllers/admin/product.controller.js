@@ -121,11 +121,16 @@ module.exports.createGET = async(req, res)=>{
 }
 
 module.exports.createPOST = async(req, res)=>{
-  const product = new Product(req.body)
-  await product.save()
+  if(res.locals.permissions.includes("products_create")){
+    const product = new Product(req.body)
+    await product.save()
 
-  req.flash("success", "Tạo sản phẩm thành công")
-  res.redirect(`${systemConfig.prefixAdmin}/products`)
+    req.flash("success", "Tạo sản phẩm thành công")
+    res.redirect(`${systemConfig.prefixAdmin}/products`)
+  }
+  else{
+    res.send("Bạn không có quyền này")
+  }
 }
 
 module.exports.editGET = async(req,res)=>{
@@ -153,10 +158,14 @@ module.exports.editGET = async(req,res)=>{
 }
 
 module.exports.editPATCH = async(req, res)=>{
-  await Product.updateOne({_id:req.params.id},req.body)
-
-  req.flash("success", "Cập nhật sản phẩm thành công")
-  res.redirect(`back`)
+  if(res.locals.permissions.includes("products_edit")){
+    await Product.updateOne({_id:req.params.id},req.body)
+    req.flash("success", "Cập nhật sản phẩm thành công")
+    res.redirect(`back`)
+  }
+  else{
+    res.send("Bạn không có quyền này")
+  }
 }
 
 module.exports.detailGET = async(req,res)=>{
