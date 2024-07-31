@@ -1,5 +1,6 @@
 const Product = require("../../models/product.model.js")
 const Category = require("../../models/category.model")
+const AdminAcc = require("../../models/adminAcc.model.js")
 
 const basicSearchHelper = require("../../helpers/basicSearch.helper.js")
 const paginationHelper = require("../../helpers/pagination.helper.js")
@@ -57,6 +58,11 @@ module.exports.index = async(req, res)=>{
   .limit(objectPagination.limit) // giới hạn bao nhiêu
   .sort(sort)
 
+  for(const product of products){
+    const createAdmin = await AdminAcc.findOne({_id: product.createBy.id})
+    product.nameOfCreateAdmin = createAdmin?.fullName
+  }
+
 
   res.render("admin/pages/product/index.pug",{
     pageTitle: "Products",
@@ -87,7 +93,16 @@ module.exports.changeMulti = async(req,res)=>{
       req.flash('success',`${listId.length} sản phẩm đã cập nhật thành trạng thái dừng hoạt động`)
       break
     case "moveToBin":
-      await Product.updateMany({_id:{$in:listId}},{deleted: true,deletedAt: new Date()})
+      await Product.updateMany(
+        {_id:{$in:listId}},
+        {
+          deleted: true,
+          deletedBy:{
+            id: res.locals.currentAdmin.id,
+            date: Date.now() // new Date()
+          }
+        }
+      )
       req.flash('success',`Đã chuyển ${listId.length} sản phẩm vào thùng rác`)
       break
     case "deleteAll":
@@ -107,7 +122,15 @@ module.exports.changeMulti = async(req,res)=>{
 
 module.exports.deleteItem = async(req,res)=>{
   const id = req.params.id
-  await Product.updateOne({_id:id},{deleted: true,deletedAt: new Date()})
+  await Product.updateOne({_id:id},
+    {
+      deleted: true,
+      deletedBy:{
+        id: res.locals.currentAdmin.id,
+        date: Date.now() // new Date()
+      }
+    }
+  )
   req.flash('success','Đã chuyển sản phẩm vào thùng rác')
   res.redirect('back')
 }
@@ -123,6 +146,7 @@ module.exports.createGET = async(req, res)=>{
 module.exports.createPOST = async(req, res)=>{
   if(res.locals.permissions.includes("products_create")){
     const product = new Product(req.body)
+    product.createBy.id = res.locals.currentAdmin.id
     await product.save()
 
     req.flash("success", "Tạo sản phẩm thành công")

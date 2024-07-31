@@ -50,6 +50,7 @@ block main
               th Tiêu đề
               th Giá
               th vị trí
+              th Người tạo
               th Trạng thái
               th Hành động
           tbody
@@ -75,6 +76,11 @@ block main
                     style="width: 60px;"
                     min="1"
                   )
+                td 
+                  if(item.nameOfCreateAdmin)
+                    p #{item.nameOfCreateAdmin}
+                    p #{moment(item.createBy.date).format("DD/MM/YYYY")}
+                    p #{moment(item.createBy.date).format("HH:mm:ss")}
                 td
                   if(permissions.includes("products_edit"))
                     if(item.status == "active")

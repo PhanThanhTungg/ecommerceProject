@@ -21,6 +21,7 @@ module.exports = async(req,res,next)=>{
   }
 
   const role = await Role.findOne({_id: adminAcc.role_id, deleted: false})
+  res.locals.currentAdmin = adminAcc
   res.locals.permissions = role.permissions
 
   next()

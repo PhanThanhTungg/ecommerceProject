@@ -40,6 +40,10 @@ app.use(flash())
 var path = require('path')
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')))
 
+//-----------------------moment
+const moment = require('moment')
+app.locals.moment = moment
+
 //-----------------------Goi den route
 
 const route = require("./route/client/index.route.js")

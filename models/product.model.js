@@ -25,7 +25,19 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  deletedAt: Date
+  createBy:{
+    id: String,
+    date:{
+      type: Date,
+      default: Date.now
+      //date.now cũng được vì mới khai báo, đến lúc tạo sẽ tự chạy vào hàm Date.now()
+      //Date.now(), new Date()
+    }
+  },
+  deletedBy:{
+    id: String,
+    date: Date
+  }
 },{
   timestamps: true
 }
