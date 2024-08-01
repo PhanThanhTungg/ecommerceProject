@@ -61,6 +61,12 @@ module.exports.index = async(req, res)=>{
   for(const product of products){
     const createAdmin = await AdminAcc.findOne({_id: product.createBy.id})
     product.nameOfCreateAdmin = createAdmin?.fullName
+
+    if(product.updatedBy.length>0){
+      const idLastestUpdate = product.updatedBy.slice(-1)[0].id
+      const lastesUpdateAdmin = await AdminAcc.findOne({_id: idLastestUpdate})
+      product.lastesUpdateName = lastesUpdateAdmin.fullName
+    }
   }
 
 
@@ -75,7 +81,17 @@ module.exports.index = async(req, res)=>{
 
 module.exports.changeStatus = async(req,res)=>{
   const [status, id] = [req.params.status, req.params.id]
-  await Product.updateOne({_id:id},{status:status})
+  await Product.updateOne({_id:id},
+    {
+      status:status,
+      $push:{
+        updatedBy:{
+          id: res.locals.currentAdmin.id,
+          date: new Date()
+        }
+      }
+    }
+  )
   req.flash('success', 'Thay đổi trạng thái thành công')
   res.redirect('back')
 }
@@ -85,11 +101,31 @@ module.exports.changeMulti = async(req,res)=>{
   
   switch(req.body.type){
     case "active":
-      await Product.updateMany({_id:{$in:listId}},{status:"active"})
+      await Product.updateMany({_id:{$in:listId}},
+        {
+          status:"active",
+          $push:{
+            updatedBy:{
+              id: res.locals.currentAdmin.id,
+              date: new Date()
+            }
+          }
+        }
+      )
       req.flash('success',`${listId.length} sản phẩm đã cập nhật thành trạng thái hoạt động`)
       break
     case "inactive":
-      await Product.updateMany({_id:{$in:listId}},{status:"inactive"})
+      await Product.updateMany({_id:{$in:listId}},
+        {
+          status:"inactive",
+          $push:{
+            updatedBy:{
+              id: res.locals.currentAdmin.id,
+              date: new Date()
+            }
+          }
+        }
+      )
       req.flash('success',`${listId.length} sản phẩm đã cập nhật thành trạng thái dừng hoạt động`)
       break
     case "moveToBin":
@@ -113,7 +149,17 @@ module.exports.changeMulti = async(req,res)=>{
       req.flash('success',`Đã thay đổi vị trí ${listId.length} sản phẩm`)
       listId.forEach(async item=>{
         const [id,pos] = item.split("-")
-        await Product.updateOne({_id: id},{position:pos})
+        await Product.updateOne({_id: id},
+          {
+            position:pos,
+            $push:{
+              updatedBy:{
+                id: res.locals.currentAdmin.id,
+                date: new Date()
+              }
+            }
+          }
+        )
       })
       break
   }
@@ -183,7 +229,18 @@ module.exports.editGET = async(req,res)=>{
 
 module.exports.editPATCH = async(req, res)=>{
   if(res.locals.permissions.includes("products_edit")){
-    await Product.updateOne({_id:req.params.id},req.body)
+    await Product.updateOne(
+      {_id:req.params.id},
+      {
+        ...req.body,
+        $push:{
+          updatedBy:{
+            id: res.locals.currentAdmin.id,
+            date: new Date()
+          }
+        }
+      }
+    )
     req.flash("success", "Cập nhật sản phẩm thành công")
     res.redirect(`back`)
   }

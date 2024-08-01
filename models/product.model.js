@@ -34,14 +34,19 @@ const productSchema = new mongoose.Schema({
       //Date.now(), new Date()
     }
   },
+  updatedBy:[{
+    id: String,
+    date: Date
+  }],
   deletedBy:{
     id: String,
     date: Date
   }
-},{
-  timestamps: true
-}
-);
+},
+// {
+//   timestamps: true
+// }
+)
 
 const Product = mongoose.model("Product", productSchema, "products")
 //products: ten collection

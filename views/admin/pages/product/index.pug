@@ -51,6 +51,7 @@ block main
               th Giá
               th vị trí
               th Người tạo
+              th Cập nhật gần nhất
               th Trạng thái
               th Hành động
           tbody
@@ -81,6 +82,12 @@ block main
                     p #{item.nameOfCreateAdmin}
                     p #{moment(item.createBy.date).format("DD/MM/YYYY")}
                     p #{moment(item.createBy.date).format("HH:mm:ss")}
+                td 
+                  if(item.lastesUpdateName)
+                    - const time = item.updatedBy.slice(-1)[0].date
+                    p #{item.lastesUpdateName}
+                    p #{moment(time).format("DD/MM/YYYY")}
+                    p #{moment(time).format("HH:mm:ss")}
                 td
                   if(permissions.includes("products_edit"))
                     if(item.status == "active")
