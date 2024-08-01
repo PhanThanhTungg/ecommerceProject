@@ -208,7 +208,7 @@ module.exports.editGET = async(req,res)=>{
     const id = req.params.id
 
     const product = await Product.findOne({
-      _id:id,
+      _id: id,
       deleted:false
     })
 

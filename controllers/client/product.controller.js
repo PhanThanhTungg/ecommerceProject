@@ -1,4 +1,5 @@
 const Product = require("../../models/product.model")
+const Category = require("../../models/category.model")
 
 module.exports.index = async(req,res)=>{ //index la ten ham
 
@@ -18,21 +19,33 @@ module.exports.index = async(req,res)=>{ //index la ten ham
   })
 }
 
-module.exports.detailGET = async (req, res) => {
-  const slug = req.params.slug;
+module.exports.detailCategoryGET = async (req, res) => {
+  try {
+    const categorySlug = req.params.categorySlug
+    const category =await Category.findOne({slug: categorySlug})
 
-  const product = await Product.findOne({
-    slug: slug,
-    deleted: false,
-    status: "active"
-  });
+    const getListCategory = async (parCateId)=>{
+      const listCateId = [parCateId]
+      const childrenCates = await Category.find({parent_id: parCateId, deleted: false, status:"active"})
+      for(const child of childrenCates){
+        listCateId.push(...await getListCategory(child.id))
+      }
+      return listCateId
+    }
 
-  if(product) {
-    res.render("client/pages/product/detail", {
-      pageTitle: "Chi tiết sản phẩm",
-      product: product
-    });
-  } else {
-    res.redirect("/");
+    const products = await Product.find({
+      category_id:{$in: await getListCategory(category.id)},
+      deleted: false,
+      status: "active"
+    })
+
+    res.render("client/pages/product/index.pug", {
+      pageTitle: category.title,
+      products: products
+    })
+    
+  } catch (error) {
+    res.redirect("/")
   }
+  
 }

@@ -27,7 +27,7 @@ block main
           id="category_id"
           class="form-control"
         )
-          option(value="") -- Chọn danh mục --
+          option(value="" disabled selected required) -- Chọn danh mục --
           if(categorys)
             +select-tree(categorys)
       div(class="form-group form-check form-check-inline")
