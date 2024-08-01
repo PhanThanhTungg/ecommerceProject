@@ -20,7 +20,6 @@ module.exports.index = async(req,res)=>{ //index la ten ham
 
 module.exports.detailGET = async (req, res) => {
   const slug = req.params.slug;
-  console.log(req)
 
   const product = await Product.findOne({
     slug: slug,
