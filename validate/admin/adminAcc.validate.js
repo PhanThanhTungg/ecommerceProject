@@ -39,7 +39,7 @@ module.exports.editPATCH = async (req,res,next)=>{
     return
   }
 
-  const exitAdminAcc = await AdminAcc.findOne({_id:{$ne:req.params.id},email: req.body.email, deleted: false})
+  const exitAdminAcc = await AdminAcc.findOne({_id:{$ne:res.locals.currentAdmin.id},email: req.body.email, deleted: false})
   if(exitAdminAcc){
     req.flash("error", "email đã tồn tại")
     res.redirect("back")

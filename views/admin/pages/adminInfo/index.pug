@@ -1,0 +1,31 @@
+extends ../../layouts/default.pug
+
+block main
+  h1(class="mb-4 page-title") Thông tin cá nhân
+
+  if (currentAdmin.avatar)
+    img(src=currentAdmin.avatar width="150px" class="mb-3")
+  else
+    img(src="/admin/images/avatar.png" width="150px" class="mb-3")
+
+  if (currentAdmin.fullName)
+    p Họ tên: <b>#{currentAdmin.fullName}</b>
+
+  if (currentAdmin.email)
+    p Email: <b>#{currentAdmin.email}</b>
+
+  if (currentAdmin.phone)
+    p Số điện thoại: <b>#{currentAdmin.phone}</b>
+
+  p 
+    span Trạng thái: 
+    span
+      <b>#{currentAdmin.status === "active" ? "Hoạt động": "Dừng hoạt động"}</b>
+
+  if (roleTitle)
+    p Phân quyền: <b>#{roleTitle}</b>
+
+  a(
+    href=`${prefixAdmin}/adminInfo/edit`
+    class="btn btn-primary button-1"
+  ) Chỉnh sửa thông tin
