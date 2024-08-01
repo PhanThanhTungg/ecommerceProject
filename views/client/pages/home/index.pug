@@ -1,5 +1,18 @@
 extends ../../layouts/default.pug
 include ../../mixins/boxhead.pug
+include ../../mixins/list-product.pug
 
 block main
-  +box-head(pageTitle)
+  .container.my-3
+    .row
+      .col-12
+        +box-head("Sản phẩm nổi bật")
+
+    +list-product(featuredProducts)
+  
+  .container.my-3
+    .row
+      .col-12
+        +box-head("Sản phẩm mới nhất")
+
+    +list-product(newProducts)
