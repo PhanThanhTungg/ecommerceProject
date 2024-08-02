@@ -1,0 +1,13 @@
+mixin alert-success(time)
+  - if (messages.success)
+    //- messages là biến toàn cục 
+    .alert.alert-success(show-alert data-time=`${time}`)
+      span= messages.success
+      span(close-alert) x
+
+mixin alert-error(time)
+  - if (messages.error)
+    //- messages là biến toàn cục 
+    .alert.alert-danger(show-alert data-time=`${time}`)
+      span= messages.error
+      span(close-alert) x
