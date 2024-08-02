@@ -7,4 +7,6 @@ router.get("/", controller.index)
 
 router.get("/:categorySlug",controller.detailCategoryGET)
 
+router.get("/detail/:productSlug",controller.detailProductGET)
+
 module.exports = router

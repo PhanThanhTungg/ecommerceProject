@@ -1,5 +1,6 @@
 const Product = require("../../models/product.model")
 const Category = require("../../models/category.model")
+const productHelper = require('../../helpers/product.helper')
 
 module.exports.index = async(req,res)=>{ //index la ten ham
 
@@ -42,6 +43,35 @@ module.exports.detailCategoryGET = async (req, res) => {
     res.render("client/pages/product/index.pug", {
       pageTitle: category.title,
       products: products
+    })
+    
+  } catch (error) {
+    res.redirect("/")
+  }
+  
+}
+
+module.exports.detailProductGET = async (req, res) => {
+  try {
+    const productSlug = req.params.productSlug
+
+    const product = await Product.findOne({
+      slug: productSlug,
+      deleted: false,
+      status: "active"
+    })
+
+    const category = await Category.findOne({
+      _id: product.category_id,
+      deleted: false,
+      status: "active"
+    })
+
+    product.category = category
+    product.newPrice = (product.price*(100-product.discountPercentage)/100).toFixed(0)
+
+    res.render("client/pages/product/detailProduct.pug", {
+      product: product
     })
     
   } catch (error) {
