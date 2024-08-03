@@ -26,6 +26,4 @@ if(inputUpdateQuantitys){
   })
 }
 
-
-
 //end - update quantity for cart
