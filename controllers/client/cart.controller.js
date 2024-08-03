@@ -34,8 +34,11 @@ module.exports.addPOST = async (req,res)=>{
   const checkProductInCart = cart.products.find(item=>item.id==productId)
   if(checkProductInCart){
     await Cart.updateOne(
-      {_id: cartId, 'products.id':productId},{
-        'products.$.quantity': quantity+ checkProductInCart.quantity
+      {_id: cartId, 'products.id':productId},
+      {
+        $set:{
+          'products.$.quantity': quantity+ checkProductInCart.quantity
+        }
       }
     )
 
@@ -56,7 +59,25 @@ module.exports.addPOST = async (req,res)=>{
 
 module.exports.deleteDELETE = async (req,res)=>{
   await Cart.updateOne({_id: req.cookies.cartId},
-    {$pull:{products:{_id: req.params.id}}})
+    {
+      $pull:{
+        products:{_id: req.params.id}
+      }
+    }
+  )
   req.flash("success", "Đã xóa sản phẩm khỏi giỏ hàng")
+  res.redirect("back")
+}
+
+module.exports.updateGET = async (req,res)=>{
+  
+  await Cart.updateOne({_id: req.cookies.cartId, 'products._id': req.params.id},{
+    $set:{
+      'products.$.quantity': parseInt(req.params.quantity)
+    }
+  })
+
+
+  req.flash("success", "Thay đổi số lượng thành công")
   res.redirect("back")
 }

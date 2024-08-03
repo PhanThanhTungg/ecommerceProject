@@ -13,3 +13,19 @@ if(showAlert) {
   })
 }
 // End show-alert
+
+//update quantity for cart
+const inputUpdateQuantitys = document.querySelectorAll("input[name='quantity']")
+if(inputUpdateQuantitys){
+  inputUpdateQuantitys.forEach(input=>{
+    input.addEventListener("change", ()=>{
+      const id = input.getAttribute("item-id")
+      const quantity = input.value
+      window.location.href = `/cart/update/${id}/${quantity}`
+    })
+  })
+}
+
+
+
+//end - update quantity for cart
