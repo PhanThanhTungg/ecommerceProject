@@ -45,10 +45,11 @@ block main
                   )
                 td #{item.totalPrice}$
                 td
-                  a(
-                    href=`/cart/delete/${item.product_id}`
-                    class="btn btn-danger"
-                  ) Xóa
+                  form(
+                    action=`/cart/delete/${item._id}?_method=DELETE`
+                    method="POST"
+                  ) 
+                    button Xóa
         
         h3(class="text-right") Tổng đơn hàng: #{cartDetail.totalPrice}$
         

@@ -53,3 +53,10 @@ module.exports.addPOST = async (req,res)=>{
   res.redirect('back')
 
 }
+
+module.exports.deleteDELETE = async (req,res)=>{
+  await Cart.updateOne({_id: req.cookies.cartId},
+    {$pull:{products:{_id: req.params.id}}})
+  req.flash("success", "Đã xóa sản phẩm khỏi giỏ hàng")
+  res.redirect("back")
+}
