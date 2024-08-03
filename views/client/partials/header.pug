@@ -34,4 +34,6 @@ header.header
             li(class="sub-menu")
               a(href="/products") Products
               +sub-menu(layoutProductCategory)
+            li(class="cart-icon")
+              a(href="/cart") Cart (#{miniCart?miniCart.totalQuantity:0})
               
