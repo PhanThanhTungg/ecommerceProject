@@ -6,4 +6,7 @@ const validate = require("../../validate/client/user.validate.js")
 router.get("/register",controller.registerGET)
 router.post("/register",validate.registerPost,controller.registerPOST)
 
+router.get("/login",controller.loginGET)
+router.post("/login",validate.loginPost,controller.loginPOST)
+
 module.exports = router
