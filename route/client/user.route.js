@@ -9,4 +9,6 @@ router.post("/register",validate.registerPost,controller.registerPOST)
 router.get("/login",controller.loginGET)
 router.post("/login",validate.loginPost,controller.loginPOST)
 
+router.get("/logout", controller.logoutGET)
+
 module.exports = router
