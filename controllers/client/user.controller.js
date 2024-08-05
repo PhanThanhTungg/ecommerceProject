@@ -1,5 +1,7 @@
 const md5 = require("md5")
 const User = require("../../models/clientAcc.model")
+const ForgotPassword = require("../../models/forgot-password.model")
+const genOTP = require("../../helpers/generateRadomStr.helper")
 
 module.exports.registerGET = async (req,res)=>{
   if(!res.locals.user){
@@ -86,4 +88,37 @@ module.exports.loginPOST = async (req, res) => {
 module.exports.logoutGET = async (req,res)=>{
   res.clearCookie("tokenUser")
   res.redirect("/")
+}
+
+module.exports.forgotpasswordGET = async(req,res)=>{
+  res.render("client/pages/user/forgot-password", {
+    pageTitle: "Lấy lại mật khẩu",
+  })
+}
+
+module.exports.forgotpasswordPOST = async(req,res)=>{
+  const user = await User.findOne({
+    email: req.body.email,
+    deleted: false
+  })
+
+  if(!user){
+    req.flash("error", "email không tồn tại")
+    res.redirect("back")
+    return
+  }
+
+  if(user.status =="inactive"){
+    req.flash("error", "Tài khoản đang bị khóa")
+    res.redirect("back")
+    return
+  }
+
+  const forgotPw = new ForgotPassword({
+    email: req.body.email,
+    otp: genOTP(6),
+  })
+
+  await forgotPw.save()
+  res.send("ok")
 }
