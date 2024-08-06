@@ -11,6 +11,11 @@ module.exports.infoUser = async (req, res, next) => {
     if(user) {
       res.locals.user = user
     }
+    else{
+      res.clearCookie("tokenUser")
+      res.redirect("/")
+      return 
+    }
   }
   
   next()

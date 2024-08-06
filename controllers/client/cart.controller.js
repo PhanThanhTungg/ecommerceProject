@@ -77,7 +77,7 @@ module.exports.deleteDELETE = async (req,res)=>{
 module.exports.updateGET = async (req,res)=>{
   const user = await User.findOne({token:req.cookies.tokenUser})
   await Cart.updateOne(
-    user?{user_id:user.id,'products._id': req.params.id}:{_id: cartId,'products._id': req.params.id},
+    user?{user_id:user.id,'products._id': req.params.id}:{_id: req.cookies.cartId,'products._id': req.params.id},
     {
     $set:{
       'products.$.quantity': parseInt(req.params.quantity)

@@ -81,6 +81,10 @@ module.exports.loginPOST = async (req, res) => {
     }
 
     res.cookie("tokenUser", user.token)
+    const cart = await Cart.findOne({user_id: user.id})
+    if(!cart){
+      await Cart.create({user_id: user.id})
+    }
     
     res.redirect("/")
   }
