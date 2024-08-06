@@ -15,7 +15,7 @@ if(showAlert) {
 // End show-alert
 
 //update quantity for cart
-const inputUpdateQuantitys = document.querySelectorAll("input[name='quantity']")
+const inputUpdateQuantitys = document.querySelectorAll("table input[name='quantity']")
 if(inputUpdateQuantitys){
   inputUpdateQuantitys.forEach(input=>{
     input.addEventListener("change", ()=>{

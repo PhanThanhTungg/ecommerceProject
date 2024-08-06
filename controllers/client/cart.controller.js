@@ -1,8 +1,10 @@
 const Cart = require("../../models/cart.model")
 const Product = require("../../models/product.model")
+const User = require("../../models/clientAcc.model")
+const findCartHelper = require("../../helpers/findCart.helper")
 
 module.exports.indexGET = async (req,res)=>{
-  const cart = await Cart.findOne({_id: req.cookies.cartId})
+  const cart = await findCartHelper(req,res)
 
   let totalPrice = 0
 
@@ -27,14 +29,13 @@ module.exports.addPOST = async (req,res)=>{
   const productId = req.params.productId
   const quantity = parseInt(req.body.quantity)
 
-  const cart = await Cart.findOne({
-    _id: cartId
-  })
+  const cart = await findCartHelper(req,res)
 
   const checkProductInCart = cart.products.find(item=>item.id==productId)
   if(checkProductInCart){
+    const user = await User.findOne({token:req.cookies.tokenUser})
     await Cart.updateOne(
-      {_id: cartId, 'products.id':productId},
+      user?{user_id:user.id,'products.id': productId}:{_id: cartId,'products.id': productId},
       {
         $set:{
           'products.$.quantity': quantity+ checkProductInCart.quantity
@@ -43,7 +44,9 @@ module.exports.addPOST = async (req,res)=>{
     )
 
   }else{
-    await Cart.updateOne({_id: cartId},{
+    const user = await User.findOne({token:req.cookies.tokenUser})
+    await Cart.updateOne(
+      user?{user_id:user.id}:{_id: cartId},{
       $push:{
         products:{
           id: productId,
@@ -58,7 +61,9 @@ module.exports.addPOST = async (req,res)=>{
 }
 
 module.exports.deleteDELETE = async (req,res)=>{
-  await Cart.updateOne({_id: req.cookies.cartId},
+  const user = await User.findOne({token:req.cookies.tokenUser})
+  await Cart.updateOne(
+    user?{user_id:user.id}:{_id: req.cookies.cartId},
     {
       $pull:{
         products:{_id: req.params.id}
@@ -70,8 +75,10 @@ module.exports.deleteDELETE = async (req,res)=>{
 }
 
 module.exports.updateGET = async (req,res)=>{
-  
-  await Cart.updateOne({_id: req.cookies.cartId, 'products._id': req.params.id},{
+  const user = await User.findOne({token:req.cookies.tokenUser})
+  await Cart.updateOne(
+    user?{user_id:user.id,'products._id': req.params.id}:{_id: cartId,'products._id': req.params.id},
+    {
     $set:{
       'products.$.quantity': parseInt(req.params.quantity)
     }

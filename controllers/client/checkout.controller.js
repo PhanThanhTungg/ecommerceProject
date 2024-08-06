@@ -1,8 +1,10 @@
 const Cart = require("../../models/cart.model")
 const Product = require("../../models/product.model")
 const Order = require("../../models/order.model")
+const User = require("../../models/clientAcc.model")
+const findCartHelper = require("../../helpers/findCart.helper")
 module.exports.indexGET = async(req,res)=>{
-  const cart = await Cart.findOne({_id: req.cookies.cartId})
+  const cart = await findCartHelper(req,res)
   let totalPrice = 0
 
   for(const item of cart.products){
@@ -28,7 +30,7 @@ module.exports.orderPOST = async(req,res)=>{
     userInfo: req.body
   })
 
-  const cart = await Cart.findOne({_id: req.cookies.cartId})
+  const cart = await findCartHelper(req,res)
   const products = []
   for (const item of cart.products) {
     const product = await Product.findOne({

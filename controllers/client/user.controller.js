@@ -1,6 +1,7 @@
 const md5 = require("md5")
 const User = require("../../models/clientAcc.model")
 const ForgotPassword = require("../../models/forgot-password.model")
+const Cart = require("../../models/cart.model")
 const genOTP = require("../../helpers/generateRadomStr.helper")
 const sendMailHelper = require("../../helpers/sendMail.helper")
 
@@ -27,7 +28,9 @@ module.exports.registerPOST = async (req,res)=>{
     const user = new User(userInfo)
     await user.save()
   
-    res.cookie("tokenUser", user.token);
+    res.cookie("tokenUser", user.token)
+
+    await Cart.create({user_id: user.id})
   
     req.flash("success", "Đăng ký thành công")
     res.redirect("/")
