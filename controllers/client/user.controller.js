@@ -4,6 +4,7 @@ const ForgotPassword = require("../../models/forgot-password.model")
 const genOTP = require("../../helpers/generateRadomStr.helper")
 const sendMailHelper = require("../../helpers/sendMail.helper")
 
+
 module.exports.registerGET = async (req,res)=>{
   if(!res.locals.user){
     res.render("client/pages/user/register", {
@@ -173,4 +174,10 @@ module.exports.resetPOST = async(req,res)=>{
   await User.updateOne({token: req.cookies.tokenUser}, {password: md5(pw)})
   req.flash("success", "Đổi mật khẩu thành công")
   res.redirect("/")
+}
+
+module.exports.infoGET = async(req,res)=>{
+  res.render("client/pages/user/info.pug",{
+    pageTitle: "Thông tin cá nhân",
+  })
 }

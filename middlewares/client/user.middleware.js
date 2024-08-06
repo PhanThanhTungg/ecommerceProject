@@ -15,3 +15,12 @@ module.exports.infoUser = async (req, res, next) => {
   
   next()
 }
+
+module.exports.auth = async(req,res,next)=>{
+  if(res.locals.user){
+    next()
+  }
+  else{
+    res.redirect("/user/login")
+  }
+}
