@@ -1,3 +1,4 @@
+const { MongoExpiredSessionError } = require("mongodb");
 const mongoose = require("mongoose");
 
 const forgotPasswordSchema = new mongoose.Schema(
@@ -7,7 +8,7 @@ const forgotPasswordSchema = new mongoose.Schema(
     expireAt: 
       { 
         type: Date, 
-        default: new Date(Date.now()+3*60*1000)
+        default: ()=> new Date(Date.now()+3*60*1000)
       }
   },
   {

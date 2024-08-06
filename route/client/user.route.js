@@ -15,4 +15,12 @@ router.get("/password/forgot", controller.forgotpasswordGET)
 
 router.post("/password/forgot",validate.forgotPasswordPost, controller.forgotpasswordPOST)
 
+router.get("/password/otp",controller.otpGET)
+
+router.post("/password/otp",controller.otpPOST)
+
+router.get("/password/reset",controller.resetGET)
+
+router.post("/password/reset",controller.resetPOST)
+
 module.exports = router

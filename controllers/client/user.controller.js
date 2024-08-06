@@ -120,5 +120,52 @@ module.exports.forgotpasswordPOST = async(req,res)=>{
   })
 
   await forgotPw.save()
-  res.send("ok")
+  res.redirect(`/user/password/otp?email=${req.body.email}`)
+}
+
+module.exports.otpGET = async(req,res)=>{
+  res.render("client/pages/user/otp",{
+    pageTitle: "Nhập mã OTP",
+    email: req.query.email
+  })
+}
+
+module.exports.otpPOST = async(req,res)=>{
+  const {email,otp} = req.body
+
+  const checkotp = await ForgotPassword.findOne({
+    email: email,
+    otp: otp
+  })
+
+  if(!checkotp){
+    req.flash("error","OTP không khớp")
+    res.redirect("back")
+    return
+  }
+
+  const user = await User.findOne({email:email})
+
+  res.cookie("tokenUser",user.token)
+  res.redirect("/user/password/reset")
+}
+
+module.exports.resetGET = async(req,res)=>{
+  res.render("client/pages/user/reset",{
+    pageTitle: "Đổi mật khẩu",
+  })
+}
+
+module.exports.resetPOST = async(req,res)=>{
+  const [pw,confirmPw] = Object.values(req.body)
+
+  if(pw != confirmPw){
+    req.flash("error", "Mật khẩu xác thực không khớp")
+    res.redirect("back")
+    return
+  }
+
+  await User.updateOne({token: req.cookies.tokenUser}, {password: md5(pw)})
+  req.flash("success", "Đổi mật khẩu thành công")
+  res.redirect("/")
 }
