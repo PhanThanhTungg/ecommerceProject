@@ -2,6 +2,7 @@ const md5 = require("md5")
 const User = require("../../models/clientAcc.model")
 const ForgotPassword = require("../../models/forgot-password.model")
 const genOTP = require("../../helpers/generateRadomStr.helper")
+const sendMailHelper = require("../../helpers/sendMail.helper")
 
 module.exports.registerGET = async (req,res)=>{
   if(!res.locals.user){
@@ -120,6 +121,10 @@ module.exports.forgotpasswordPOST = async(req,res)=>{
   })
 
   await forgotPw.save()
+
+  sendMailHelper(forgotPw.email,"Xác thực mã OTP",
+    `Mã OTP của bạn là <b>${forgotPw.otp}</b>. Có hiệu lực trong vòng 3 phút`
+  )
   res.redirect(`/user/password/otp?email=${req.body.email}`)
 }
 
