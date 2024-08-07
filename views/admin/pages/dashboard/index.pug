@@ -1,4 +1,55 @@
-extends ../../layouts/default.pug
+extends  ../../layouts/default.pug
 
-block main 
-  h1 Dashboard
+block main
+  h1 #{pageTitle}
+
+  .row.mt-4
+    .col-12
+      .card.mb-4
+        .card-header Thông tin tài khoản
+        .card-body
+          if(currentAdmin.avatar)
+            img(
+              src=currentAdmin.avatar
+              style="height: 100px;margin-bottom: 15px;"
+            )
+          if(currentAdmin.fullName)
+            p Họ tên: <b>#{currentAdmin.fullName}</b>
+          if(currentAdmin.email)
+            p Email: <b>#{currentAdmin.email}</b>
+          if(currentAdmin.phone)
+            p Số điện thoại: <b>#{currentAdmin.phone}</b>
+          if(role.title)
+            p Phân quyền: <b>#{role.title}</b>
+
+    .col-6
+      .card.mb-4
+        .card-header Danh mục sản phẩm
+        .card-body
+          p Số lượng: <b>#{statistic.category.total}</b>
+          p Hoạt động: <b>#{statistic.category.active}</b>
+          p Dừng hoạt động: <b>#{statistic.category.inactive}</b>
+
+    .col-6
+      .card.mb-4
+        .card-header Sản phẩm
+        .card-body
+          p Số lượng: <b>#{statistic.product.total}</b>
+          p Hoạt động: <b>#{statistic.product.active}</b>
+          p Dừng hoạt động: <b>#{statistic.product.inactive}</b>
+
+    .col-6
+      .card.mb-4
+        .card-header Tài khoản admin
+        .card-body
+          p Số lượng: <b>#{statistic.adminAcc.total}</b>
+          p Hoạt động: <b>#{statistic.adminAcc.active}</b>
+          p Dừng hoạt động: <b>#{statistic.adminAcc.inactive}</b>
+
+    .col-6
+      .card.mb-4
+        .card-header Tài khoản client
+        .card-body
+          p Số lượng: <b>#{statistic.clientAcc.total}</b>
+          p Hoạt động: <b>#{statistic.clientAcc.active}</b>
+          p Dừng hoạt động: <b>#{statistic.clientAcc.inactive}</b>

@@ -52,6 +52,13 @@ route(app)
 const adminRoute = require("./route/admin/index.route.js")
 adminRoute(app)
 
+app.get("*", (req, res) => {
+  res.render("admin/pages/error/404.pug", {
+    pageTitle: "404 Not Found",
+  })
+})
+
+
 
 
 
